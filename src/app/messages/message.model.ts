@@ -5,6 +5,6 @@ export class Message {
         public id: number,
         public subject: string,
         public msgText: string,
-        public sender: Contact,
+        public sender: string,
     ) { }
 }
