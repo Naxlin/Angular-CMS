@@ -4,6 +4,7 @@
         <p class="list-group-item-text"> {{ contact?.email }} </p>
     </div>
     <span class="pull-right">
-        <img [src]="contact?.imageUrl" alt="Image of Contact {{ contact.id }}" class="img-responsive">
+        <img [src]="contact?.imageUrl" class="img-responsive">
+        <!-- alt="Image of Contact {{ contact.id }}" // Not compatible with MOCKCONTACTS.ts -->
     </span>
 </a>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
 
@@ -6,17 +6,25 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
   providedIn: 'root'
 })
 export class ContactService {
-  contacts: Contact[] = [];
+  // Application wide contacts list
+  private contacts: Contact[] = [];
+  // Selecting a contact Event Emitter
+  contactSelectedEvent = new EventEmitter<Contact>();
 
+
+  // grabs const contacts list from file
   constructor() {
-    this.contacts = MOCKCONTACTS;
+    this.contacts = MOCKCONTACTS; 
   }
 
-  getContacts() { // Returns a copy of contacts array
+  // Returns a copy of contacts array
+  getContacts() { 
     return this.contacts.slice();
   }
 
-  getContact(id: string) { // Returns a single contact by id
-    return this.contacts.find(contact => contact.id === id); // Array.find() returns undefined if none found
+  // Returns a single contact by id
+  getContact(id: string) { 
+    // Array.find() returns contact object if found or the value undefined
+    return this.contacts.find(contact => contact.id === id);
   }
 }
