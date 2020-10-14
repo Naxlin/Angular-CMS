@@ -4,6 +4,15 @@ export const MOCKCONTACTS: Contact[] = [
   // individual contacts
   // index 0
   {
+    id: '0',
+    name: 'Jonathan Smith',
+    email: 'naxlin@byui.edu',
+    phone: '503-716-0801',
+    imageUrl: '../../assets/images/jonathan.jpg',
+    group: null
+  },
+  // index 1
+  {
     id: '1',
     name: 'Rex Barzee',
     email: 'barzeer@byui.edu',
@@ -11,7 +20,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/barzeer.jpg',
     group: null
   },
-  // index 1
+  // index 2
   {
     id: '2',
     name: 'Bradley Armstrong',
@@ -20,7 +29,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/armstrongb.jpg',
     group: null
   },
-  // index 2
+  // index 3
   {
     id: '3',
     name: 'Lee Barney',
@@ -29,7 +38,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/barneyl.jpg',
     group: null
   },
-  // index 3
+  // index 4
   {
     id: '5',
     name: 'Kory Godfrey',
@@ -38,7 +47,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/godfreyko.jpg',
     group: null
   },
-  // index 4
+  // index 5
   {
     id: '7',
     name: 'R. Kent Jackson',
@@ -47,7 +56,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/jacksonk.jpg',
     group: null
   },
-  // index 5
+  // index 6
   {
     id: '8',
     name: 'Craig Lindstrom',
@@ -56,7 +65,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/lindstromc.jpg',
     group: null
   },
-  // index 6
+  // index 7
   {
     id: '9',
     name: 'Michael McLaughlin',
@@ -65,7 +74,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/mclaughlinm.jpg',
     group: null
   },
-  // index 7
+  // index 8
   {
     id: '11',
     name: 'Brent Morring',
@@ -74,7 +83,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/morringb.jpg',
     group: null
   },
-  // index 8
+  // index 9
   {
     id: '12',
     name: 'Mark Olaveson',
@@ -83,7 +92,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/olavesonm.jpg',
     group: null
   },
-  // index 9
+  // index 10
   {
     id: '13',
     name: 'Steven Rigby',
@@ -92,7 +101,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/rigbys.jpg',
     group: null
   },
-  // index 10
+  // index 11
   {
     id: '15',
     name: 'Blaine Robertson',
@@ -101,7 +110,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/robertsonb.jpg',
     group: null
   },
-  // index 11
+  // index 12
   {
     id: '16',
     name: 'Randy Somsen',
@@ -110,7 +119,7 @@ export const MOCKCONTACTS: Contact[] = [
     imageUrl: '../../assets/images/somsenr.jpg',
     group: null
   },
-  // index 12
+  // index 13
   {
     id: '17',
     name: 'Shane Thompson',
@@ -121,7 +130,7 @@ export const MOCKCONTACTS: Contact[] = [
   },
 
   // teams
-  // index 13
+  // index 14
   {
     id: '4', name: 'Network/OS team', email: ' ', phone: ' ', imageUrl: ' ', group: [
     {
@@ -151,7 +160,7 @@ export const MOCKCONTACTS: Contact[] = [
   ]
   },
 
-  // index 14
+  // index 15
   {
     id: '6', name: 'Software Development team', email: ' ', phone: ' ', imageUrl: ' ', group: [
     {
@@ -189,7 +198,7 @@ export const MOCKCONTACTS: Contact[] = [
   ]
   },
 
-  // index 15
+  // index 16
   {
     id: '10', name: 'Web Development team', email: ' ', phone: ' ', imageUrl: ' ', group: [
     {
@@ -219,7 +228,7 @@ export const MOCKCONTACTS: Contact[] = [
   ]
   },
 
-  // index 16
+  // index 17
   {
     id: '14', name: 'Database team', email: ' ', phone: ' ', imageUrl: ' ', group: [
     {
@@ -249,7 +258,7 @@ export const MOCKCONTACTS: Contact[] = [
   ]
   },
 
-  // index 17
+  // index 18
   {
     id: '18', name: 'Computer Security team', email: ' ', phone: ' ', imageUrl: ' ', group: [
     {
