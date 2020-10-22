@@ -19,7 +19,7 @@ export class DocumentService {
 
   // Returns a copy of all documents
   getDocuments() {
-    return this.documents.slice();
+    return this.documents.sort((a,b)=>a.name>b.name?1:b.name>a.name?-1:0).slice();
   }
 
   // Returns a single document by id or undefined if not found

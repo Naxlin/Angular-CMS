@@ -19,7 +19,7 @@ export class ContactService {
 
   // Returns a copy of contacts array
   getContacts() { 
-    return this.contacts.slice();
+    return this.contacts.sort((a,b)=>a.name>b.name?1:b.name>a.name?-1:0).slice();
   }
 
   // Returns a single contact by id
