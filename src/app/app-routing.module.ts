@@ -9,7 +9,7 @@ import { DocumentsComponent } from './documents/documents.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
 
 const cmsRoutes: Routes = [
-    { path: "", component: DocumentsComponent },
+    { path: "", redirectTo: "/documents", pathMatch: 'full' },
     { path: "contacts", component: ContactsComponent, children: [
         { path: "new", component: ContactEditComponent },
         { path: ":id", component: ContactDetailComponent },
