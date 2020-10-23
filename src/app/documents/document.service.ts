@@ -8,8 +8,9 @@ import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
 export class DocumentService {
   // List of documents for the whole application
   private documents: Document[] = [];
-  // Setting up event emitter
+  // Setting up event emitters
   documentSelectedEvent = new EventEmitter<Document>();
+  documentChangedEvent = new EventEmitter<Document[]>();
 
 
   // Imports from constant list of documents
@@ -25,5 +26,23 @@ export class DocumentService {
   // Returns a single document by id or undefined if not found
   getDocument(id: string) {
     return this.documents.find(doc => doc.id === id);
+  }
+
+  // Deletes a document from the document list and emits the change
+  deleteDocument(doc: Document) {
+    if (!doc) {
+      // If no document: leave function
+      return;
+    }
+
+    const pos = this.documents.indexOf(doc);
+    if (pos < 0) {
+      // If invalid index: leave function
+    }
+
+    // Removing document
+    this.documents.splice(pos, 1);
+    // Emitting change (reusing getDocuments() to reuse sort)
+    this.documentChangedEvent.emit(this.getDocuments());
   }
 }

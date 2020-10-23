@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { threadId } from 'worker_threads';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
 
@@ -14,5 +15,10 @@ export class DocumentListComponent implements OnInit {
 
   ngOnInit(): void {
     this.documents = this.documentService.getDocuments();
+    this.documentService.documentChangedEvent.subscribe(
+      () => {
+        this.documents = this.documentService.getDocuments();
+      }
+    );
   }
 }
