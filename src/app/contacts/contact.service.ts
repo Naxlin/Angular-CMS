@@ -8,8 +8,9 @@ import { MOCKCONTACTS } from './MOCKCONTACTS';
 export class ContactService {
   // Application wide contacts list
   private contacts: Contact[] = [];
-  // Selecting a contact Event Emitter
+  // Selecting a contact Event Emitters
   contactSelectedEvent = new EventEmitter<Contact>();
+  contactChangedEvent = new EventEmitter<Contact[]>();
 
 
   // grabs const contacts list from file
@@ -26,5 +27,23 @@ export class ContactService {
   getContact(id: string) { 
     // Array.find() returns contact object if found or the value undefined
     return this.contacts.find(contact => contact.id === id);
+  }
+
+  deleteContact(contact: Contact) {
+    if (!contact) {
+      // If no contact: leave function
+      return;
+    }
+
+    const pos = this.contacts.indexOf(contact);
+    if (pos < 0) {
+      // If invalid index: leave function
+      return;
+    }
+
+    // Removing document
+    this.contacts.splice(pos, 1);
+    // Emitting change (reusing getDocuments() to reuse sort)
+    this.contactChangedEvent.emit(this.getContacts());
   }
 }

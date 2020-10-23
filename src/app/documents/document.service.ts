@@ -38,6 +38,7 @@ export class DocumentService {
     const pos = this.documents.indexOf(doc);
     if (pos < 0) {
       // If invalid index: leave function
+      return;
     }
 
     // Removing document
