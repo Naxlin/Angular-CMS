@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { threadId } from 'worker_threads';
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service';
 
