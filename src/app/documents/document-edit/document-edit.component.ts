@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DocumentService } from '../document.service';
 
 @Component({
   selector: 'cms-document-edit',
