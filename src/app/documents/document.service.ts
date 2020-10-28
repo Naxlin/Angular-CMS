@@ -9,6 +9,7 @@ import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
 export class DocumentService {
   // List of documents for the whole application
   private documents: Document[] = [];
+  // Highest Id number
   private maxDocId: number;
   // Setting up event emitters
   documentListChangedEvent = new Subject<Document[]>();
@@ -39,7 +40,7 @@ export class DocumentService {
 
   // Adds a new document with a new unique ID to the documents array
   addDocument(newDoc: Document) {
-    // Ensuring a document exists
+    // Ensuring the new document exists
     if (!newDoc)
       return;
 
