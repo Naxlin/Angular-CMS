@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Document } from './document.model';
 import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
 
@@ -9,8 +10,8 @@ export class DocumentService {
   // List of documents for the whole application
   private documents: Document[] = [];
   // Setting up event emitters
-  documentSelectedEvent = new EventEmitter<Document>();
-  documentChangedEvent = new EventEmitter<Document[]>();
+  documentSelectedEvent = new Subject<Document>();
+  documentListChangedEvent = new Subject<Document[]>();
 
 
   // Imports from constant list of documents
@@ -44,6 +45,6 @@ export class DocumentService {
     // Removing document
     this.documents.splice(pos, 1);
     // Emitting change (reusing getDocuments() to reuse sort)
-    this.documentChangedEvent.emit(this.getDocuments());
+    this.documentListChangedEvent.next(this.getDocuments());
   }
 }

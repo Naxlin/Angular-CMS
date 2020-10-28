@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
 
@@ -9,8 +10,7 @@ export class ContactService {
   // Application wide contacts list
   private contacts: Contact[] = [];
   // Selecting a contact Event Emitters
-  contactSelectedEvent = new EventEmitter<Contact>();
-  contactChangedEvent = new EventEmitter<Contact[]>();
+  contactListChangedEvent = new Subject<Contact[]>();
 
 
   // grabs const contacts list from file
@@ -44,6 +44,6 @@ export class ContactService {
     // Removing document
     this.contacts.splice(pos, 1);
     // Emitting change (reusing getDocuments() to reuse sort)
-    this.contactChangedEvent.emit(this.getContacts());
+    this.contactListChangedEvent.next(this.getContacts());
   }
 }

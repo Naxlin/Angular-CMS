@@ -10,8 +10,5 @@ export class DocumentItemComponent implements OnInit {
   @Input() document: Document;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void { }
 }

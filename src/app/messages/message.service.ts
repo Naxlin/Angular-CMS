@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Message } from './message.model';
 import { MOCKMESSAGES } from './MOCKMESSAGES';
 
@@ -9,7 +10,7 @@ export class MessageService {
   // All messages in application
   private messages: Message[] = [];
   // Messages changed event emitter
-  messageChangedEvent = new EventEmitter<Message[]>();
+  messageListChangedEvent = new Subject<Message[]>();
 
   // Get values from const message list
   constructor() { 
@@ -29,6 +30,6 @@ export class MessageService {
   // Adds a message to the message list and updates dependant parties
   addMessage(message: Message) {
     this.messages.push(message);
-    this.messageChangedEvent.emit(this.messages.slice());
+    this.messageListChangedEvent.next(this.messages.slice());
   }
 }

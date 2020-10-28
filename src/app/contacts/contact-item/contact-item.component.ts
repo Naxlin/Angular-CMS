@@ -6,6 +6,9 @@ import { Contact } from '../contact.model';
   templateUrl: './contact-item.component.html',
   styleUrls: ['./contact-item.component.css']
 })
-export class ContactItemComponent {
+export class ContactItemComponent implements OnInit {
   @Input() contact: Contact;
+
+  constructor() { }
+  ngOnInit() { }
 }
