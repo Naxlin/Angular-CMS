@@ -34,7 +34,6 @@ export class DocumentService {
   getMaxId() {
     let maxId = 0;
     this.documents.map(doc => { if (maxId < +doc.id) { maxId = +doc.id }});
-    console.log(maxId);
     return maxId;
   }
 
