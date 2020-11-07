@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material/MatFormFieldControl';
+import { MatFormFieldControl } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Contact } from '../contact.model';
 import { ContactService } from '../contact.service';
