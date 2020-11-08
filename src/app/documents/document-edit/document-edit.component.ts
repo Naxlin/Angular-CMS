@@ -33,7 +33,7 @@ export class DocumentEditComponent implements OnInit {
 
         this.editMode = true;
         this.document = JSON.parse(JSON.stringify(this.originalDocument));
-    }) 
+    });
   }
 
   onSubmit(form: NgForm) {

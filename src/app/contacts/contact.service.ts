@@ -58,7 +58,7 @@ export class ContactService {
   }
 
   // Updates a contact with a new one, replacing the old contact obj
-  updateDocument(ogContact: Contact, newContact: Contact) {
+  updateContact(ogContact: Contact, newContact: Contact) {
     // Ensuring both contacts exists
     if (!ogContact || !newContact)
       return;
