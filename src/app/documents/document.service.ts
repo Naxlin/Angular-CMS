@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Document } from './document.model';
 import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,20 +10,35 @@ import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
 export class DocumentService {
   // List of documents for the whole application
   private documents: Document[] = [];
-  // Highest Id number
+  // Current highest Id number
   private maxDocId: number;
   // Setting up event emitters
+  private dbUrl: string = "https://wdd-430-cms.firebaseio.com/documents.json"
   documentListChangedEvent = new Subject<Document[]>();
 
   // Imports from constant list of documents
-  constructor() { 
+  constructor(private http: HttpClient) { 
     this.documents = MOCKDOCUMENTS;
     this.maxDocId = this.getMaxId();
   }
 
+  sortDocuments() {
+    return this.documents.sort((a,b)=>a.name>b.name?1:b.name>a.name?-1:0);
+  }
+
   // Returns a copy of all documents
   getDocuments() {
-    return this.documents.sort((a,b)=>a.name>b.name?1:b.name>a.name?-1:0).slice();
+    this.http.get<Document[]>(this.dbUrl).subscribe((documents: Document[]) => {
+      // Get documents from database
+      this.documents = documents;
+      // Get the max id among them
+      this.maxDocId = this.getMaxId();
+      // Sort & Emit the document list
+      this.documentListChangedEvent.next(this.sortDocuments());
+    },
+    (error: any) => {
+      console.log("Get Documents Error: " + error);
+    });
   }
 
   // Returns a single document by id or undefined if not found
@@ -49,9 +65,9 @@ export class DocumentService {
 
     // Pushing the new doc onto the doc list
     this.documents.push(newDoc);
-    
-    // Emitting change (reusing getDocuments() to reuse sort)
-    this.documentListChangedEvent.next(this.getDocuments());
+
+    // Sort & Emit the document list
+    this.documentListChangedEvent.next(this.sortDocuments());
   }
 
   // Updates a document with a new one, replacing the old doc obj
@@ -69,8 +85,8 @@ export class DocumentService {
     newDoc.id = ogDoc.id;
     this.documents[pos] = newDoc;
 
-    // Emitting change (reusing getDocuments() to reuse sort)
-    this.documentListChangedEvent.next(this.getDocuments());
+    // Sort & Emit the document list
+    this.documentListChangedEvent.next(this.sortDocuments());
   }
 
   // Deletes a document from the document list and emits the change
@@ -87,7 +103,7 @@ export class DocumentService {
     // Removing document
     this.documents.splice(pos, 1);
 
-    // Emitting change (reusing getDocuments() to reuse sort)
-    this.documentListChangedEvent.next(this.getDocuments());
+    // Sort & Emit the document list
+    this.documentListChangedEvent.next(this.sortDocuments());
   }
 }
