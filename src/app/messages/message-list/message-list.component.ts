@@ -15,10 +15,10 @@ export class MessageListComponent implements OnInit, OnDestroy {
   constructor(private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.messages = this.messageService.getMessages();
     this.subscription = this.messageService.messageListChangedEvent.subscribe(
       (messages: Message[]) => { this.messages = messages; }
     );
+    this.messageService.getMessages();
   }
 
   ngOnDestroy() {

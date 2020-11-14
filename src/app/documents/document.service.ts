@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Document } from './document.model';
-import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -12,13 +11,13 @@ export class DocumentService {
   private documents: Document[] = [];
   // Current highest Id number
   private maxDocId: number;
-  // Setting up event emitters
+  // Database connection url
   private dbUrl: string = "https://wdd-430-cms.firebaseio.com/documents.json"
+  // Setting up event emitters
   documentListChangedEvent = new Subject<Document[]>();
 
   // Imports from constant list of documents
   constructor(private http: HttpClient) { 
-    this.documents = MOCKDOCUMENTS;
     this.maxDocId = this.getMaxId();
   }
 
@@ -55,6 +54,18 @@ export class DocumentService {
     return maxId;
   }
 
+  // Stores the document list in the database 
+  storeDocuments() {
+    let documentsStr = JSON.stringify(this.documents);
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    this.http.put(this.dbUrl, documentsStr, { headers: headers }).subscribe(() => {
+      // Sort & Emit the document list
+      this.sortDocuments();
+      this.documentListChangedEvent.next(this.documents.slice());
+    });
+  }
+
   // Adds a new document with a new unique ID to the documents array
   addDocument(newDoc: Document) {
     // Ensuring the new document exists
@@ -70,18 +81,6 @@ export class DocumentService {
 
     // Store the document list in the database
     this.storeDocuments();
-  }
-
-  storeDocuments() {
-    let documentsStr = JSON.stringify(this.documents);
-
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
-
-    this.http.put(this.dbUrl, documentsStr, { headers: headers }).subscribe(() => {
-      // Sort & Emit the document list
-      this.sortDocuments();
-      this.documentListChangedEvent.next(this.documents.slice());
-    });
   }
 
   // Updates a document with a new one, replacing the old doc obj
