@@ -22,8 +22,9 @@ export class DocumentService {
     this.maxDocId = this.getMaxId();
   }
 
+  // returns the sorted document list.
   sortDocuments() {
-    return this.documents.sort((a,b)=>a.name>b.name?1:b.name>a.name?-1:0);
+    this.documents = this.documents.sort((a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:b.name.toLowerCase()>a.name.toLowerCase()?-1:0);
   }
 
   // Returns a copy of all documents
@@ -34,7 +35,8 @@ export class DocumentService {
       // Get the max id among them
       this.maxDocId = this.getMaxId();
       // Sort & Emit the document list
-      this.documentListChangedEvent.next(this.sortDocuments());
+      this.sortDocuments();
+      this.documentListChangedEvent.next(this.documents.slice());
     },
     (error: any) => {
       console.log("Get Documents Error: " + error);
@@ -66,8 +68,20 @@ export class DocumentService {
     // Pushing the new doc onto the doc list
     this.documents.push(newDoc);
 
-    // Sort & Emit the document list
-    this.documentListChangedEvent.next(this.sortDocuments());
+    // Store the document list in the database
+    this.storeDocuments();
+  }
+
+  storeDocuments() {
+    let documentsStr = JSON.stringify(this.documents);
+
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    this.http.put(this.dbUrl, documentsStr, { headers: headers }).subscribe(() => {
+      // Sort & Emit the document list
+      this.sortDocuments();
+      this.documentListChangedEvent.next(this.documents.slice());
+    });
   }
 
   // Updates a document with a new one, replacing the old doc obj
@@ -85,8 +99,8 @@ export class DocumentService {
     newDoc.id = ogDoc.id;
     this.documents[pos] = newDoc;
 
-    // Sort & Emit the document list
-    this.documentListChangedEvent.next(this.sortDocuments());
+    // Store the document list in the database
+    this.storeDocuments();
   }
 
   // Deletes a document from the document list and emits the change
@@ -103,7 +117,7 @@ export class DocumentService {
     // Removing document
     this.documents.splice(pos, 1);
 
-    // Sort & Emit the document list
-    this.documentListChangedEvent.next(this.sortDocuments());
+    // Store the document list in the database
+    this.storeDocuments();
   }
 }
