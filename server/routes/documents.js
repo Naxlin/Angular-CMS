@@ -37,6 +37,8 @@ router.post('/', (req, res, next) => {
 
   document.save()
     .then(createdDocument => {
+    console.log('inside .then');
+        
     res.status(201).json({
         message: 'Document added successfully',
         document: createdDocument

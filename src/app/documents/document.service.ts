@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Document } from './document.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -9,33 +10,27 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class DocumentService {
   // List of documents for the whole application
   private documents: Document[] = [];
-  // Current highest Id number
-  private maxDocId: number;
   // Database connection url
-  private dbUrl: string = "https://wdd-430-cms.firebaseio.com/documents.json"
+  private dbUrl: string = "http://localhost:3000/documents/";
   // Setting up event emitters
   documentListChangedEvent = new Subject<Document[]>();
 
   // Imports from constant list of documents
-  constructor(private http: HttpClient) { 
-    this.maxDocId = this.getMaxId();
-  }
+  constructor(private http: HttpClient) { }
 
   // returns the sorted document list.
-  sortDocuments() {
+  sortAndSend() {
     this.documents = this.documents.sort((a,b)=>a.name.toLowerCase()>b.name.toLowerCase()?1:b.name.toLowerCase()>a.name.toLowerCase()?-1:0);
+    this.documentListChangedEvent.next(this.documents.slice());
   }
 
   // Returns a copy of all documents
   getDocuments() {
-    this.http.get<Document[]>(this.dbUrl).subscribe((documents: Document[]) => {
+    this.http.get<{ message: String, documents: Document[]}>(this.dbUrl).subscribe((res: any) => {
       // Get documents from database
-      this.documents = documents;
-      // Get the max id among them
-      this.maxDocId = this.getMaxId();
+      this.documents = res.documents;
       // Sort & Emit the document list
-      this.sortDocuments();
-      this.documentListChangedEvent.next(this.documents.slice());
+      this.sortAndSend();
     },
     (error: any) => {
       console.log("Get Documents Error: " + error);
@@ -47,40 +42,26 @@ export class DocumentService {
     return this.documents.find(doc => doc.id === id);
   }
 
-  // Returns the largest ID in the array
-  getMaxId() {
-    let maxId = 0;
-    this.documents.map(doc => { if (maxId < +doc.id) { maxId = +doc.id }});
-    return maxId;
-  }
-
-  // Stores the document list in the database 
-  storeDocuments() {
-    let documentsStr = JSON.stringify(this.documents);
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
-
-    this.http.put(this.dbUrl, documentsStr, { headers: headers }).subscribe(() => {
-      // Sort & Emit the document list
-      this.sortDocuments();
-      this.documentListChangedEvent.next(this.documents.slice());
-    });
-  }
-
   // Adds a new document with a new unique ID to the documents array
   addDocument(newDoc: Document) {
     // Ensuring the new document exists
     if (!newDoc)
       return;
 
-    // Creating and setting unique ID based on previous maxDocId
-    this.maxDocId++;
-    newDoc.id = this.maxDocId.toString();
+    // Removing id if it exists (db sets this)
+    newDoc.id = '';
+  
+    // setting headers for the http post
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    // Pushing the new doc onto the doc list
-    this.documents.push(newDoc);
-
-    // Store the document list in the database
-    this.storeDocuments();
+    // add to database
+    this.http.post<{ message: string, document: Document }>(this.dbUrl, newDoc, { headers: headers }).subscribe(
+      (responseData) => {
+        // add new document to documents
+        this.documents.push(responseData.document);
+        this.sortAndSend();
+      }
+    );
   }
 
   // Updates a document with a new one, replacing the old doc obj
@@ -96,11 +77,19 @@ export class DocumentService {
 
     // Replacing original doc with new one
     newDoc.id = ogDoc.id;
-    this.documents[pos] = newDoc;
 
-    // Store the document list in the database
-    this.storeDocuments();
+    // Setting header
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    // update database
+    this.http.put(this.dbUrl + ogDoc.id, newDoc, { headers: headers }).subscribe(
+      (response: Response) => {
+        this.documents[pos] = newDoc;
+        this.sortAndSend();
+      }
+    );
   }
+
 
   // Deletes a document from the document list and emits the change
   deleteDocument(doc: Document) {
@@ -113,10 +102,12 @@ export class DocumentService {
     if (pos < 0)
       return;
 
-    // Removing document
-    this.documents.splice(pos, 1);
-
-    // Store the document list in the database
-    this.storeDocuments();
+    // delete from database
+    this.http.delete(this.dbUrl + doc.id).subscribe(
+      (response: Response) => {
+        this.documents.splice(pos, 1);
+        this.sortAndSend();
+      }
+    );
   }
 }

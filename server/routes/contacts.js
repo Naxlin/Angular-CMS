@@ -29,6 +29,8 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   const maxContactId = sequenceGenerator.nextId("contacts");
 
+console.log('before creating contact')
+
   const contact = new Contact({
       id: maxContactId,
       name: req.body.name,
@@ -37,6 +39,8 @@ router.post('/', (req, res, next) => {
       imageUrl: req.body.imageUrl,
       group: req.body.group
   });
+
+  console.log('after creating contact')
 
   contact.save()
     .then(createdContact => {
