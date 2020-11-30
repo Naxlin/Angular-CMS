@@ -17,9 +17,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-    Contact.findOne({"id": req.params.id})
-    .populate('group')
-    .then(con => {
+    Contact.findOne({"id": req.params.id}).populate('group').then(con => {
         res.status(200).json({message: "Contact fetched successfully!", contact: con});
     }).catch(err => {
         returnError(res, err);

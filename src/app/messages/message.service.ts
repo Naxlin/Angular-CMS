@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Contact } from '../contacts/contact.model';
 import { Message } from './message.model';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
+// import { MOCKMESSAGES } from './MOCKMESSAGES';
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +57,10 @@ export class MessageService {
     // add to database
     this.http.post<{ message: string, mess: Message }>(this.dbUrl, message, { headers: headers }).subscribe(
       (responseData) => {
+        // setting message id
+        message.id = responseData.mess.id;
         // add new message to messages
-        this.messages.push(responseData.mess);
+        this.messages.push(message);
         this.send();
       }
     );

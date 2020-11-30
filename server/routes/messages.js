@@ -9,7 +9,7 @@ function returnError(res, err) {
 }
 
 router.get('/', (req, res, next) => {
-    Message.find().then(mess => {
+    Message.find().populate('sender').then(mess => {
         res.status(200).json({message: "Messages fetched successfully!", messages: mess});
     }).catch(err => {
         returnError(res, err);
@@ -26,17 +26,16 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const maxMessageId = sequenceGenerator.nextId("Messages");
+  const maxMessageId = sequenceGenerator.nextId("messages");
 
   const message = new Message({
       id: maxMessageId,
       subject: req.body.subject,
       msgText: req.body.msgText,
-      sender: req.body.sender,
+      sender: req.body.sender
   });
 
-  message.save()
-    .then(createdMessage => {
+  message.save().then(createdMessage => {
     res.status(201).json({
         message: 'Message added successfully',
         mess: createdMessage
